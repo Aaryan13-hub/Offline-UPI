@@ -1,4 +1,4 @@
-\# UPI Offline Mesh — Demo
+# UPI Offline Mesh — Demo
 
 
 
@@ -10,41 +10,41 @@ This repo is the \*\*server side\*\* of that system, plus a software simulator o
 
 
 
-\---
+---
 
 
 
-\## Table of Contents
+## Table of Contents
 
 
 
-1\. \[What this demo proves](#what-this-demo-proves)
+1. [What this demo proves](#what-this-demo-proves)
 
-2\. \[How to run it](#how-to-run-it)
+2. [How to run it](#how-to-run-it)
 
-3\. \[The demo flow (step by step)](#the-demo-flow-step-by-step)
+3. [The demo flow (step by step)](#the-demo-flow-step-by-step)
 
-4\. \[Architecture](#architecture)
+4. [Architecture](#architecture)
 
-5\. \[The three hard problems and how they're solved](#the-three-hard-problems-and-how-theyre-solved)
+5. [The three hard problems and how they're solved](#the-three-hard-problems-and-how-theyre-solved)
 
-6\. \[File-by-file walkthrough](#file-by-file-walkthrough)
+6. [File-by-file walkthrough](#file-by-file-walkthrough)
 
-7\. \[API reference](#api-reference)
+7. [API reference](#api-reference)
 
-8\. \[Tests](#tests)
+8. [Tests](#tests)
 
-9\. \[What's NOT real (and what would change for production)](#whats-not-real-and-what-would-change-for-production)
+9. [What's NOT real (and what would change for production)](#whats-not-real-and-what-would-change-for-production)
 
-10\. \[Honest limitations of the concept](#honest-limitations-of-the-concept)
-
-
-
-\---
+10. [Honest limitations of the concept](#honest-limitations-of-the-concept)
 
 
 
-\## What this demo proves
+---
+
+
+
+## What this demo proves
 
 
 
@@ -52,11 +52,11 @@ The system shows three things working end to end:
 
 
 
-1\. \*\*A payment can travel from sender to backend through untrusted intermediaries\*\* without any of them being able to read or tamper with it. (Hybrid RSA + AES-GCM encryption.)
+1. **A payment can travel from sender to backend through untrusted intermediaries\*\* without any of them being able to read or tamper with it. (Hybrid RSA + AES-GCM encryption.)
 
-2\. \*\*Even if the same payment reaches the backend simultaneously through multiple bridge nodes, it settles exactly once.\*\* (Idempotency via atomic compare-and-set on the ciphertext hash.)
+2. **Even if the same payment reaches the backend simultaneously through multiple bridge nodes, it settles exactly once.** (Idempotency via atomic compare-and-set on the ciphertext hash.)
 
-3\. \*\*A tampered or replayed packet is rejected\*\* before it touches the ledger.
+3. **A tampered or replayed packet is rejected** before it touches the ledger.
 
 
 
@@ -64,25 +64,25 @@ You'll see all three in the dashboard.
 
 
 
-\---
+---
 
 
 
-\## How to run it
+## How to run it
 
 
 
-\### Prerequisites
+### Prerequisites
 
 
 
-\- \*\*JDK 17 or newer\*\* installed and on PATH (or `JAVA\_HOME` set). Check with `java -version`.
+- **JDK 17 or newer** installed and on PATH (or `JAVA\_HOME` set). Check with `java -version`.
 
-\- That's it. No database, no Redis, no Maven (the wrapper handles it). Just Java.
+- That's it. No database, no Redis, no Maven (the wrapper handles it). Just Java.
 
 
 
-\### Run on Windows
+### Run on Windows
 
 
 
@@ -102,7 +102,7 @@ The first run downloads Maven (\~10 MB) and all dependencies (\~80 MB) — give 
 
 
 
-\### Run on Mac/Linux
+### Run on Mac/Linux
 
 
 
@@ -114,7 +114,7 @@ The first run downloads Maven (\~10 MB) and all dependencies (\~80 MB) — give 
 
 
 
-\### Open the dashboard
+### Open the dashboard
 
 
 
@@ -122,7 +122,7 @@ Once you see `Started UpiMeshApplication in X.XXX seconds`, open:
 
 
 
-\*\*http://localhost:8080\*\*
+**http://localhost:8080**
 
 
 
@@ -130,7 +130,7 @@ You'll get a dark dashboard with everything you need to drive the demo.
 
 
 
-\### Stop the server
+### Stop the server
 
 
 
@@ -138,7 +138,7 @@ You'll get a dark dashboard with everything you need to drive the demo.
 
 
 
-\### Run the tests
+### Run the tests
 
 
 
@@ -154,11 +154,11 @@ The interesting one is `IdempotencyConcurrencyTest` — it fires three threads d
 
 
 
-\---
+---
 
 
 
-\## The demo flow (step by step)
+## The demo flow (step by step)
 
 
 
@@ -166,25 +166,25 @@ The dashboard has four buttons that walk through the full pipeline. The intended
 
 
 
-\### Step 1 — Compose a payment
+### Step 1 — Compose a payment
 
 
 
-Choose sender, receiver, amount, PIN. Click \*\*"📤 Inject into Mesh"\*\*.
+Choose sender, receiver, amount, PIN. Click **"📤 Inject into Mesh"**.
 
 
 
-\*\*What actually happens on the backend:\*\*
+**What actually happens on the backend:**
 
-\- The server pretends to be the sender's phone.
+- The server pretends to be the sender's phone.
 
-\- It builds a `PaymentInstruction` with a unique nonce and current timestamp.
+- It builds a `PaymentInstruction` with a unique nonce and current timestamp.
 
-\- It encrypts that with the server's RSA public key (using hybrid encryption — see below).
+- It encrypts that with the server's RSA public key (using hybrid encryption — see below).
 
-\- It wraps the ciphertext in a `MeshPacket` with a TTL of 5.
+- It wraps the ciphertext in a `MeshPacket` with a TTL of 5.
 
-\- It hands the packet to `phone-alice`, an offline virtual device.
+- It hands the packet to `phone-alice`, an offline virtual device.
 
 
 
@@ -192,11 +192,11 @@ You'll see `phone-alice` now holds 1 packet.
 
 
 
-\### Step 2 — Run gossip rounds
+### Step 2 — Run gossip rounds
 
 
 
-Click \*\*"🔄 Run Gossip Round"\*\*. Then click it again.
+Click **"🔄 Run Gossip Round"**. Then click it again.
 
 
 
@@ -212,11 +212,11 @@ In the real system this would happen organically as people walk past each other 
 
 
 
-\### Step 3 — Bridge node walks outside
+### Step 3 — Bridge node walks outside
 
 
 
-Click \*\*"📡 Bridges Upload to Backend"\*\*.
+Click **"📡 Bridges Upload to Backend"**.
 
 
 
@@ -226,27 +226,27 @@ Click \*\*"📡 Bridges Upload to Backend"\*\*.
 
 The backend pipeline runs:
 
-1\. Hash the ciphertext (`SHA-256`).
+1. Hash the ciphertext (`SHA-256`).
 
-2\. Try to claim the hash in the idempotency cache.
+2. Try to claim the hash in the idempotency cache.
 
-3\. If claimed: decrypt with the server's RSA private key.
+3. If claimed: decrypt with the server's RSA private key.
 
-4\. Verify freshness (signedAt within 24 hours).
+4 Verify freshness (signedAt within 24 hours).
 
-5\. Run the debit/credit in a single DB transaction.
-
-
-
-Watch the \*\*Account Balances\*\* table — money has moved. Watch the \*\*Transaction Ledger\*\* — a new row appears.
+5. Run the debit/credit in a single DB transaction.
 
 
 
-\### Step 4 — Demonstrate idempotency (the killer feature)
+Watch the **Account Balances** table — money has moved. Watch the **Transaction Ledger** — a new row appears.
 
 
 
-Reset the mesh. Inject a single packet. Run gossip 2 times. Now \*\*all 5 devices hold the same packet, including multiple bridges in a more complex setup\*\*.
+### Step 4 — Demonstrate idempotency (the killer feature)
+
+
+
+Reset the mesh. Inject a single packet. Run gossip 2 times. Now **all 5 devices hold the same packet, including multiple bridges in a more complex setup**.
 
 
 
@@ -254,15 +254,15 @@ To really see idempotency in action, modify `MeshSimulatorService.java` to seed 
 
 
 
-1\. Click "Inject" once.
+1. Click "Inject" once.
 
-2\. Click "Gossip" twice.
+2. Click "Gossip" twice.
 
-3\. Click "Flush Bridges" — only `phone-bridge` is a bridge in the default seed, so just one upload happens.
+3. Click "Flush Bridges" — only `phone-bridge` is a bridge in the default seed, so just one upload happens.
 
 
 
-To exercise the \*concurrent duplicate\* case properly, run the test:
+To exercise the *concurrent duplicate* case properly, run the test:
 
 ```cmd
 
@@ -276,11 +276,11 @@ This test creates one packet, fires 3 threads at `BridgeIngestionService.ingest(
 
 
 
-\---
+---
 
 
 
-\## Architecture
+## Architecture
 
 
 
@@ -326,13 +326,13 @@ This test creates one packet, fires 3 threads at `BridgeIngestionService.ingest(
 
 │       ▼                                                                 │
 
-│  \[1] hash ciphertext (SHA-256)                                          │
+│  [1] hash ciphertext (SHA-256)                                          │
 
 │       │                                                                 │
 
 │       ▼                                                                 │
 
-│  \[2] IdempotencyService.claim(hash)  ◀── atomic putIfAbsent (≈ Redis    │
+│  [2] IdempotencyService.claim(hash)  ◀── atomic putIfAbsent (≈ Redis    │
 
 │       │                                  SETNX). Duplicates rejected    │
 
@@ -340,7 +340,7 @@ This test creates one packet, fires 3 threads at `BridgeIngestionService.ingest(
 
 │       ▼                                                                 │
 
-│  \[3] HybridCryptoService.decrypt(ciphertext)                            │
+│  [3] HybridCryptoService.decrypt(ciphertext)                            │
 
 │       │       (RSA-OAEP unwraps AES key, AES-GCM decrypts payload       │
 
@@ -348,13 +348,13 @@ This test creates one packet, fires 3 threads at `BridgeIngestionService.ingest(
 
 │       ▼                                                                 │
 
-│  \[4] Freshness check: signedAt within last 24h                          │
+│  [4] Freshness check: signedAt within last 24h                          │
 
 │       │                                                                 │
 
 │       ▼                                                                 │
 
-│  \[5] SettlementService.settle()                                         │
+│  [5] SettlementService.settle()                                         │
 
 │       @Transactional: debit sender, credit receiver, write ledger       │
 
@@ -366,15 +366,15 @@ This test creates one packet, fires 3 threads at `BridgeIngestionService.ingest(
 
 
 
-\---
+---
 
 
 
-\## The three hard problems and how they're solved
+## The three hard problems and how they're solved
 
 
 
-\### Problem 1: Untrusted intermediates
+### Problem 1: Untrusted intermediates
 
 
 
@@ -382,7 +382,7 @@ A random stranger's phone is carrying your transaction. How do you stop them fro
 
 
 
-\*\*Solution: Hybrid encryption (RSA-OAEP + AES-GCM).\*\*
+**Solution: Hybrid encryption (RSA-OAEP + AES-GCM).**
 
 
 
@@ -394,17 +394,17 @@ But RSA can only encrypt small data (\~245 bytes for a 2048-bit key), and our pa
 
 
 
-1\. Generate a fresh AES-256 key for \*this packet\*.
+1. Generate a fresh AES-256 key for *this packet*.
 
-2\. Encrypt the JSON with \*\*AES-256-GCM\*\* (fast + authenticated).
+2. Encrypt the JSON with **AES-256-GCM** (fast + authenticated).
 
-3\. Encrypt just the AES key with \*\*RSA-OAEP\*\*.
+3. Encrypt just the AES key with **RSA-OAEP**.
 
-4\. Concatenate: `\[256 bytes RSA-encrypted AES key]\[12 bytes IV]\[AES ciphertext + 16-byte GCM tag]`.
+4. Concatenate: `[256 bytes RSA-encrypted AES key][12 bytes IV][AES ciphertext + 16-byte GCM tag]`.
 
 
 
-\*\*Why GCM specifically?\*\* It's authenticated encryption. If an intermediate flips one bit anywhere in the ciphertext, decryption throws an exception — the GCM tag won't verify. The server cannot be tricked into processing tampered data.
+**Why GCM specifically?\*\* It's authenticated encryption. If an intermediate flips one bit anywhere in the ciphertext, decryption throws an exception — the GCM tag won't verify. The server cannot be tricked into processing tampered data.
 
 
 
@@ -412,7 +412,7 @@ This is the same scheme TLS uses. See `HybridCryptoService.java`.
 
 
 
-\### Problem 2: The duplicate-storm
+### Problem 2: The duplicate-storm
 
 
 
@@ -420,7 +420,7 @@ Three bridge nodes hold the same packet. They all walk outside at the same insta
 
 
 
-\*\*Solution: Atomic compare-and-set on the ciphertext hash.\*\*
+**Solution: Atomic compare-and-set on the ciphertext hash.**
 
 
 
@@ -444,13 +444,13 @@ return prev == null;  // true = first claimer, false = duplicate
 
 
 
-\*\*Why hash the ciphertext, not the packetId or the cleartext?\*\*
+**Why hash the ciphertext, not the packetId or the cleartext?**
 
-\- `packetId` can be rewritten by a malicious intermediate. Two copies of the same payment could have different packetIds. Bad key.
+- `packetId` can be rewritten by a malicious intermediate. Two copies of the same payment could have different packetIds. Bad key.
 
-\- The cleartext requires decryption first. We want to dedupe \*before\* spending CPU on RSA.
+- The cleartext requires decryption first. We want to dedupe \*before\* spending CPU on RSA.
 
-\- The ciphertext is authenticated by GCM, so any tampering is detectable on decrypt. Two legitimate deliveries of the same payment have byte-identical ciphertexts (AES is deterministic for a given key+IV+plaintext, and the same packet means the same key+IV+plaintext).
+- The ciphertext is authenticated by GCM, so any tampering is detectable on decrypt. Two legitimate deliveries of the same payment have byte-identical ciphertexts (AES is deterministic for a given key+IV+plaintext, and the same packet means the same key+IV+plaintext).
 
 
 
@@ -462,7 +462,7 @@ There's also a defense-in-depth fallback: `transactions.packet\_hash` has a uniq
 
 
 
-\### Problem 3: Replay attacks
+### Problem 3: Replay attacks
 
 
 
@@ -470,13 +470,13 @@ An attacker who captured a ciphertext weeks ago could replay it whenever conveni
 
 
 
-\*\*Solution: Two layers.\*\*
+**Solution: Two layers.**
 
 
 
-1\. \*\*Inside the encrypted payload\*\*, the sender includes `signedAt` (epoch millis). The server rejects any packet older than 24 hours. The attacker can't change `signedAt` without breaking the GCM tag.
+1. **Inside the encrypted payload**, the sender includes `signedAt` (epoch millis). The server rejects any packet older than 24 hours. The attacker can't change `signedAt` without breaking the GCM tag.
 
-2\. \*\*Inside the encrypted payload\*\*, the sender includes a \*\*nonce\*\* (UUID). Even if Alice legitimately sends Bob ₹100 twice, the nonces differ → ciphertexts differ → hashes differ → both settle. But a \*replay\* of one specific signed packet is byte-identical, so the idempotency cache catches it.
+2. **Inside the encrypted payload**, the sender includes a **nonce** (UUID). Even if Alice legitimately sends Bob ₹100 twice, the nonces differ → ciphertexts differ → hashes differ → both settle. But a *replay* of one specific signed packet is byte-identical, so the idempotency cache catches it.
 
 
 
@@ -484,11 +484,11 @@ See `BridgeIngestionService.java` for the freshness check.
 
 
 
-\---
+---
 
 
 
-\## File-by-file walkthrough
+## File-by-file walkthrough
 
 
 
@@ -578,7 +578,7 @@ src/test/java/com/demo/upimesh/
 
 
 
-\---
+---
 
 
 
@@ -618,7 +618,7 @@ H2 console login: JDBC URL `jdbc:h2:mem:upimesh`, username `sa`, no password.
 
 
 
-\### Request format for `/api/bridge/ingest`
+### Request format for `/api/bridge/ingest`
 
 
 
@@ -670,11 +670,11 @@ Response:
 
 
 
-\---
+---
 
 
 
-\## Tests
+## Tests
 
 
 
@@ -692,19 +692,19 @@ The three included tests:
 
 
 
-\- \*\*`encryptDecryptRoundTrip`\*\* — sanity-check that hybrid encryption is symmetric.
+- **`encryptDecryptRoundTrip`** — sanity-check that hybrid encryption is symmetric.
 
-\- \*\*`tamperedCiphertextIsRejected`\*\* — flip a byte in the ciphertext, verify that `BridgeIngestionService` returns `INVALID` instead of crashing or settling.
+- **`tamperedCiphertextIsRejected`** — flip a byte in the ciphertext, verify that `BridgeIngestionService` returns `INVALID` instead of crashing or settling.
 
-\- \*\*`singlePacketDeliveredByThreeBridgesSettlesExactlyOnce`\*\* — the headline test. Three threads, one packet, simultaneous delivery. Asserts exactly one `SETTLED`, two `DUPLICATE\_DROPPED`, and that the sender's balance changed by exactly the amount once.
-
-
-
-\---
+- **`singlePacketDeliveredByThreeBridgesSettlesExactlyOnce`** — the headline test. Three threads, one packet, simultaneous delivery. Asserts exactly one `SETTLED`, two `DUPLICATE\_DROPPED`, and that the sender's balance changed by exactly the amount once.
 
 
 
-\## What's NOT real (and what would change for production)
+---
+
+
+
+## What's NOT real (and what would change for production)
 
 
 
@@ -744,65 +744,65 @@ The cryptography and idempotency code is essentially production-shaped. The infr
 
 
 
-\---
+---
 
 
 
-\## Honest limitations of the concept
+## Honest limitations of the concept
 
 
 
-I want this README to be useful to you when someone reviews the project, so let's be straight about what this design \*\*does not\*\* solve. These are not implementation bugs — they're inherent to "no internet, anywhere in the chain":
+I want this README to be useful to you when someone reviews the project, so let's be straight about what this design **does not** solve. These are not implementation bugs — they're inherent to "no internet, anywhere in the chain":
 
 
 
-1\. \*\*The receiver has no way to verify the sender has the funds.\*\* When sender hands receiver a phone showing "₹500 sent," it's an IOU, not a settled payment. If the sender's account is empty when the packet finally reaches the backend, the settlement will be `REJECTED` and the receiver is out ₹500 with no recourse. \*This is why real offline UPI (UPI Lite) uses a pre-funded hardware-backed wallet\* — to give cryptographic proof of available funds offline.
+1. **The receiver has no way to verify the sender has the funds.** When sender hands receiver a phone showing "₹500 sent," it's an IOU, not a settled payment. If the sender's account is empty when the packet finally reaches the backend, the settlement will be `REJECTED` and the receiver is out ₹500 with no recourse. \*This is why real offline UPI (UPI Lite) uses a pre-funded hardware-backed wallet\* — to give cryptographic proof of available funds offline.
 
-2\. \*\*A malicious sender can double-spend offline.\*\* With ₹500 in their account, they could send a packet to Bob in basement A, walk to basement B, and send another ₹500 to Carol. Whichever packet hits the backend first wins; the other gets `REJECTED`. Same root cause as #1.
+2. **A malicious sender can double-spend offline.** With ₹500 in their account, they could send a packet to Bob in basement A, walk to basement B, and send another ₹500 to Carol. Whichever packet hits the backend first wins; the other gets `REJECTED`. Same root cause as #1.
 
-3\. \*\*Bluetooth in real life is hard.\*\* Background BLE on Android is heavily throttled since Android 8. iOS peripheral mode is locked down. Two strangers' phones reliably forming a GATT connection while the apps aren't actively open is genuinely difficult and a lot of energy. This demo skips that problem entirely by simulating the mesh.
+3. **Bluetooth in real life is hard.** Background BLE on Android is heavily throttled since Android 8. iOS peripheral mode is locked down. Two strangers' phones reliably forming a GATT connection while the apps aren't actively open is genuinely difficult and a lot of energy. This demo skips that problem entirely by simulating the mesh.
 
-4\. \*\*Privacy / liability.\*\* A stranger carries your encrypted transaction packet on their phone. They can't read it, but its existence is metadata. In a real deployment you'd want to think about regulatory disclosures and what happens if a device is seized.
-
-
-
-For a college / portfolio project: name the concept honestly as \*\*"mesh-routed deferred settlement"\*\* rather than "real-time offline UPI," and you'll have a much stronger pitch. The cryptography and idempotency work here is real engineering and worth showing off.
+4. **Privacy / liability.** A stranger carries your encrypted transaction packet on their phone. They can't read it, but its existence is metadata. In a real deployment you'd want to think about regulatory disclosures and what happens if a device is seized.
 
 
 
-\---
+For a college / portfolio project: name the concept honestly as **"mesh-routed deferred settlement"** rather than "real-time offline UPI," and you'll have a much stronger pitch. The cryptography and idempotency work here is real engineering and worth showing off.
 
 
 
-\## Troubleshooting
+---
 
 
 
-\*\*`java: command not found`\*\* — Install JDK 17+. On Windows, `winget install EclipseAdoptium.Temurin.17.JDK` or download from adoptium.net.
+## Troubleshooting
 
 
 
-\*\*Port 8080 already in use\*\* — Change `server.port` in `application.properties`.
+**`java: command not found`** — Install JDK 17+. On Windows, `winget install EclipseAdoptium.Temurin.17.JDK` or download from adoptium.net.
 
 
 
-\*\*First `mvnw.cmd` run hangs for a long time\*\* — It's downloading Maven (\~10 MB) then dependencies (\~80 MB). Give it 2–3 minutes on a normal connection. After that, startup is \~5 seconds.
+**Port 8080 already in use** — Change `server.port` in `application.properties`.
 
 
 
-\*\*`mvnw.cmd : The term 'mvnw.cmd' is not recognized`\*\* — On PowerShell you need to prefix with `.\\`: `.\\mvnw.cmd spring-boot:run`.
+**First `mvnw.cmd` run hangs for a long time** — It's downloading Maven (\~10 MB) then dependencies (\~80 MB). Give it 2–3 minutes on a normal connection. After that, startup is \~5 seconds.
 
 
 
-\*\*Tests fail intermittently\*\* — The concurrency test is timing-sensitive. If it ever flakes, run it 3x; if it consistently fails on your hardware, file the actual failure output.
+**`mvnw.cmd : The term 'mvnw.cmd' is not recognized`** — On PowerShell you need to prefix with `.\\`: `.\\mvnw.cmd spring-boot:run`.
 
 
 
-\---
+**Tests fail intermittently\*\* — The concurrency test is timing-sensitive. If it ever flakes, run it 3x; if it consistently fails on your hardware, file the actual failure output.
 
 
 
-\## License
+---
+
+
+
+## License
 
 
 
