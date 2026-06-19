@@ -3,6 +3,7 @@ package com.demo.offline_upi.crypto;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -10,6 +11,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Base64;
 
+@Component
 public class ServerKeyHolder {
     private static final Logger log = LoggerFactory.getLogger(ServerKeyHolder.class);
 

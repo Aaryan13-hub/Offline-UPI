@@ -2,6 +2,7 @@ package com.demo.offline_upi.crypto;
 
 import com.demo.offline_upi.model.PaymentInstruction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
 
 import javax.crypto.Cipher;
@@ -18,6 +19,7 @@ import java.security.SecureRandom;
 import java.security.spec.MGF1ParameterSpec;
 import java.util.Base64;
 
+@Service
 public class HybridCryptoService {
     private static final String RSA_TRANSFORMATION = "RSA/ECB/OAEPWithSHA-256ANDMGF1Padding";
     private static final String AES_TRANSFORMATION = "AES/GCM/NoPadding";
