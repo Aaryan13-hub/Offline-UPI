@@ -10,7 +10,7 @@ public class MeshPacket {
     private String  packetId;
 
     @Min(0)
-    private String ttl;
+    private int ttl;
 
     @NotNull
     private String createdAt;
@@ -21,10 +21,26 @@ public class MeshPacket {
     public MeshPacket() {
     }
 
-    public MeshPacket(String packetId, String ttl, String createdAt, String ciphertext) {
+    public MeshPacket(String packetId, int ttl, String createdAt, String ciphertext) {
         this.packetId = packetId;
         this.ttl = ttl;
         this.createdAt = createdAt;
+        this.ciphertext = ciphertext;
+    }
+
+    public void setPacketId(String packetId) {
+        this.packetId = packetId;
+    }
+
+    public void setTtl(int ttl) {
+        this.ttl = ttl;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setCiphertext(String ciphertext) {
         this.ciphertext = ciphertext;
     }
 
@@ -32,7 +48,7 @@ public class MeshPacket {
         return packetId;
     }
 
-    public String getTtl() {
+    public int getTtl() {
         return ttl;
     }
 
