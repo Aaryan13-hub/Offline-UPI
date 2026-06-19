@@ -13,7 +13,7 @@ public class MeshPacket {
     private int ttl;
 
     @NotNull
-    private String createdAt;
+    private long createdAt;
 
     @NotBlank
     private String ciphertext;
@@ -21,7 +21,7 @@ public class MeshPacket {
     public MeshPacket() {
     }
 
-    public MeshPacket(String packetId, int ttl, String createdAt, String ciphertext) {
+    public MeshPacket(String packetId, int ttl, long createdAt, String ciphertext) {
         this.packetId = packetId;
         this.ttl = ttl;
         this.createdAt = createdAt;
@@ -36,7 +36,7 @@ public class MeshPacket {
         this.ttl = ttl;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -52,7 +52,7 @@ public class MeshPacket {
         return ttl;
     }
 
-    public String getCreatedAt() {
+    public long getCreatedAt() {
         return createdAt;
     }
 
